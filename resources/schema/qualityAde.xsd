@@ -1,0 +1,664 @@
+<?xml version="1.0" encoding="UTF-8"?><schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:bldg="http://www.opengis.net/citygml/building/2.0" xmlns:core="http://www.opengis.net/citygml/2.0" xmlns:gml="http://www.opengis.net/gml" xmlns:qual="https://transfer.hft-stuttgart.de/pages/citydoctor/qualityade/0.1.4" elementFormDefault="qualified" targetNamespace="https://transfer.hft-stuttgart.de/pages/citydoctor/qualityade/0.1.4" version="0.1.4">
+  <import namespace="http://www.opengis.net/citygml/2.0" schemaLocation="http://schemas.opengis.net/citygml/2.0/cityGMLBase.xsd"/>
+  <import namespace="http://www.opengis.net/citygml/building/2.0" schemaLocation="http://schemas.opengis.net/citygml/building/2.0/building.xsd"/>
+  <import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
+  <!--XML Schema document created by ShapeChange - http://shapechange.net/-->
+  <element abstract="true" name="AbstractError" substitutionGroup="gml:_Object" type="qual:AbstractErrorType"/>
+  <complexType abstract="true" name="AbstractErrorType">
+    <sequence/>
+  </complexType>
+  <complexType name="AbstractErrorPropertyType">
+    <sequence>
+      <element ref="qual:AbstractError"/>
+    </sequence>
+  </complexType>
+  <element abstract="true" name="AbstractGeometryError" substitutionGroup="qual:AbstractError" type="qual:AbstractGeometryErrorType"/>
+  <complexType abstract="true" name="AbstractGeometryErrorType">
+    <complexContent>
+      <extension base="qual:AbstractErrorType">
+        <sequence/>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="AbstractGeometryErrorPropertyType">
+    <sequence>
+      <element ref="qual:AbstractGeometryError"/>
+    </sequence>
+  </complexType>
+  <element abstract="true" name="AbstractPolygonError" substitutionGroup="qual:AbstractGeometryError" type="qual:AbstractPolygonErrorType"/>
+  <complexType abstract="true" name="AbstractPolygonErrorType">
+    <complexContent>
+      <extension base="qual:AbstractGeometryErrorType">
+        <sequence>
+          <element name="polygonId" type="string"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="AbstractPolygonErrorPropertyType">
+    <sequence>
+      <element ref="qual:AbstractPolygonError"/>
+    </sequence>
+  </complexType>
+  <element abstract="true" name="AbstractRingError" substitutionGroup="qual:AbstractGeometryError" type="qual:AbstractRingErrorType"/>
+  <complexType abstract="true" name="AbstractRingErrorType">
+    <complexContent>
+      <extension base="qual:AbstractGeometryErrorType">
+        <sequence>
+          <element name="linearRingId" type="string"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="AbstractRingErrorPropertyType">
+    <sequence>
+      <element ref="qual:AbstractRingError"/>
+    </sequence>
+  </complexType>
+  <element abstract="true" name="AbstractSemanticError" substitutionGroup="qual:AbstractError" type="qual:AbstractSemanticErrorType"/>
+  <complexType abstract="true" name="AbstractSemanticErrorType">
+    <complexContent>
+      <extension base="qual:AbstractErrorType">
+        <sequence/>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="AbstractSemanticErrorPropertyType">
+    <sequence>
+      <element ref="qual:AbstractSemanticError"/>
+    </sequence>
+  </complexType>
+  <element abstract="true" name="AbstractSolidError" substitutionGroup="qual:AbstractGeometryError" type="qual:AbstractSolidErrorType"/>
+  <complexType abstract="true" name="AbstractSolidErrorType">
+    <complexContent>
+      <extension base="qual:AbstractGeometryErrorType">
+        <sequence>
+          <element name="geometryId" type="string"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="AbstractSolidErrorPropertyType">
+    <sequence>
+      <element ref="qual:AbstractSolidError"/>
+    </sequence>
+  </complexType>
+  <element name="Checking" substitutionGroup="gml:_Object" type="qual:CheckingType"/>
+  <complexType name="CheckingType">
+    <sequence>
+      <element name="featureType" type="qual:FeatureTypeType"/>
+    </sequence>
+  </complexType>
+  <complexType name="CheckingPropertyType">
+    <sequence>
+      <element ref="qual:Checking"/>
+    </sequence>
+  </complexType>
+  <element name="Edge" substitutionGroup="gml:_Object" type="qual:EdgeType"/>
+  <complexType name="EdgeType">
+    <sequence>
+      <element name="from" type="gml:DirectPositionType"/>
+      <element name="to" type="gml:DirectPositionType"/>
+    </sequence>
+  </complexType>
+  <complexType name="EdgePropertyType">
+    <sequence>
+      <element ref="qual:Edge"/>
+    </sequence>
+  </complexType>
+  <element name="EdgeList" substitutionGroup="gml:_Object" type="qual:EdgeListType"/>
+  <complexType name="EdgeListType">
+    <sequence>
+      <element maxOccurs="unbounded" name="edge" type="qual:EdgePropertyType"/>
+    </sequence>
+  </complexType>
+  <complexType name="EdgeListPropertyType">
+    <sequence>
+      <element ref="qual:EdgeList"/>
+    </sequence>
+  </complexType>
+  <element name="Error" substitutionGroup="gml:_Object" type="qual:ErrorType"/>
+  <complexType name="ErrorType">
+    <sequence>
+      <element name="occurrences" type="integer"/>
+      <element name="name" type="qual:ErrorTypeType"/>
+    </sequence>
+  </complexType>
+  <complexType name="ErrorPropertyType">
+    <sequence>
+      <element ref="qual:Error"/>
+    </sequence>
+  </complexType>
+  <simpleType name="ErrorTypeType">
+    <restriction base="string">
+      <enumeration value="GE_R_TOO_FEW_POINTS"/>
+      <enumeration value="GE_R_NOT_CLOSED"/>
+      <enumeration value="GE_R_CONSECUTIVE_POINTS_SAME"/>
+      <enumeration value="GE_R_SELF_INTERSECTION"/>
+      <enumeration value="GE_P_NON_PLANAR_POLYGON_DISTANCE_PLANE"/>
+      <enumeration value="GE_P_NON_PLANAR_POLYGON_NORMALS_DEVIATION"/>
+      <enumeration value="GE_P_INTERIOR_DISCONNECTED"/>
+      <enumeration value="GE_P_INTERSECTING_RINGS"/>
+      <enumeration value="GE_P_HOLE_OUTSIDE"/>
+      <enumeration value="GE_P_ORIENTATION_RINGS_SAME"/>
+      <enumeration value="GE_P_INNER_RINGS_NESTED"/>
+      <enumeration value="GE_S_TOO_FEW_POLYGONS"/>
+      <enumeration value="GE_S_NOT_CLOSED"/>
+      <enumeration value="GE_S_NON_MANIFOLD_EDGE"/>
+      <enumeration value="GE_S_POLYGON_WRONG_ORIENTATION"/>
+      <enumeration value="GE_S_ALL_POLYGONS_WRONG_ORIENTATION"/>
+      <enumeration value="GE_S_NON_MANIFOLD_VERTEX"/>
+      <enumeration value="GE_S_SELF_INTERSECTION"/>
+      <enumeration value="GE_S_MULTIPLE_CONNECTED_COMPONENTS"/>
+      <enumeration value="SE_ATTRIBUTE_WRONG_VALUE"/>
+      <enumeration value="SE_ATTRIBUTE_MISSING"/>
+    </restriction>
+  </simpleType>
+  <element name="FeatureStatistics" substitutionGroup="gml:_Object" type="qual:FeatureStatisticsType"/>
+  <complexType name="FeatureStatisticsType">
+    <sequence>
+      <element name="numChecked" type="integer"/>
+      <element name="numErrors" type="integer"/>
+    </sequence>
+  </complexType>
+  <complexType name="FeatureStatisticsPropertyType">
+    <sequence>
+      <element ref="qual:FeatureStatistics"/>
+    </sequence>
+  </complexType>
+  <simpleType name="FeatureTypeType">
+    <restriction base="string">
+      <enumeration value="BUILDING"/>
+      <enumeration value="TRANSPORTATION"/>
+      <enumeration value="VEGETATION"/>
+      <enumeration value="BRIDGE"/>
+      <enumeration value="WATER"/>
+      <enumeration value="LAND"/>
+    </restriction>
+  </simpleType>
+  <element name="Filter" substitutionGroup="gml:_Object" type="qual:FilterType"/>
+  <complexType name="FilterType">
+    <sequence>
+      <element maxOccurs="unbounded" minOccurs="0" name="checking" type="qual:CheckingPropertyType"/>
+    </sequence>
+  </complexType>
+  <complexType name="FilterPropertyType">
+    <sequence>
+      <element ref="qual:Filter"/>
+    </sequence>
+  </complexType>
+  <element name="GE_P_HOLE_OUTSIDE" substitutionGroup="qual:AbstractPolygonError" type="qual:GE_P_HOLE_OUTSIDEType"/>
+  <complexType name="GE_P_HOLE_OUTSIDEType">
+    <complexContent>
+      <extension base="qual:AbstractPolygonErrorType">
+        <sequence>
+          <element name="linearRingId" type="string"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="GE_P_HOLE_OUTSIDEPropertyType">
+    <sequence>
+      <element ref="qual:GE_P_HOLE_OUTSIDE"/>
+    </sequence>
+  </complexType>
+  <element name="GE_P_INNER_RINGS_NESTED" substitutionGroup="qual:AbstractPolygonError" type="qual:GE_P_INNER_RINGS_NESTEDType"/>
+  <complexType name="GE_P_INNER_RINGS_NESTEDType">
+    <complexContent>
+      <extension base="qual:AbstractPolygonErrorType">
+        <sequence>
+          <element name="linearRingId1" type="string"/>
+          <element name="linearRingId2" type="string"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="GE_P_INNER_RINGS_NESTEDPropertyType">
+    <sequence>
+      <element ref="qual:GE_P_INNER_RINGS_NESTED"/>
+    </sequence>
+  </complexType>
+  <element name="GE_P_INTERIOR_DISCONNECTED" substitutionGroup="qual:AbstractPolygonError" type="qual:GE_P_INTERIOR_DISCONNECTEDType"/>
+  <complexType name="GE_P_INTERIOR_DISCONNECTEDType">
+    <complexContent>
+      <extension base="qual:AbstractPolygonErrorType">
+        <sequence/>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="GE_P_INTERIOR_DISCONNECTEDPropertyType">
+    <sequence>
+      <element ref="qual:GE_P_INTERIOR_DISCONNECTED"/>
+    </sequence>
+  </complexType>
+  <element name="GE_P_INTERSECTING_RINGS" substitutionGroup="qual:AbstractPolygonError" type="qual:GE_P_INTERSECTING_RINGSType"/>
+  <complexType name="GE_P_INTERSECTING_RINGSType">
+    <complexContent>
+      <extension base="qual:AbstractPolygonErrorType">
+        <sequence>
+          <element name="linearRingId1" type="string"/>
+          <element name="linearRingId2" type="string"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="GE_P_INTERSECTING_RINGSPropertyType">
+    <sequence>
+      <element ref="qual:GE_P_INTERSECTING_RINGS"/>
+    </sequence>
+  </complexType>
+  <element name="GE_P_NON_PLANAR_POLYGON_DISTANCE_PLANE" substitutionGroup="qual:AbstractPolygonError" type="qual:GE_P_NON_PLANAR_POLYGON_DISTANCE_PLANEType"/>
+  <complexType name="GE_P_NON_PLANAR_POLYGON_DISTANCE_PLANEType">
+    <complexContent>
+      <extension base="qual:AbstractPolygonErrorType">
+        <sequence>
+          <element name="distance" type="gml:LengthType"/>
+          <element name="vertex" type="gml:DirectPositionType"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="GE_P_NON_PLANAR_POLYGON_DISTANCE_PLANEPropertyType">
+    <sequence>
+      <element ref="qual:GE_P_NON_PLANAR_POLYGON_DISTANCE_PLANE"/>
+    </sequence>
+  </complexType>
+  <element name="GE_P_NON_PLANAR_POLYGON_NORMALS_DEVIATION" substitutionGroup="qual:AbstractPolygonError" type="qual:GE_P_NON_PLANAR_POLYGON_NORMALS_DEVIATIONType"/>
+  <complexType name="GE_P_NON_PLANAR_POLYGON_NORMALS_DEVIATIONType">
+    <complexContent>
+      <extension base="qual:AbstractPolygonErrorType">
+        <sequence>
+          <element name="deviation" type="gml:AngleType"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="GE_P_NON_PLANAR_POLYGON_NORMALS_DEVIATIONPropertyType">
+    <sequence>
+      <element ref="qual:GE_P_NON_PLANAR_POLYGON_NORMALS_DEVIATION"/>
+    </sequence>
+  </complexType>
+  <element name="GE_P_ORIENTATION_RINGS_SAME" substitutionGroup="qual:AbstractPolygonError" type="qual:GE_P_ORIENTATION_RINGS_SAMEType"/>
+  <complexType name="GE_P_ORIENTATION_RINGS_SAMEType">
+    <complexContent>
+      <extension base="qual:AbstractPolygonErrorType">
+        <sequence>
+          <element name="linearRingId" type="string"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="GE_P_ORIENTATION_RINGS_SAMEPropertyType">
+    <sequence>
+      <element ref="qual:GE_P_ORIENTATION_RINGS_SAME"/>
+    </sequence>
+  </complexType>
+  <element name="GE_R_CONSECUTIVE_POINTS_SAME" substitutionGroup="qual:AbstractRingError" type="qual:GE_R_CONSECUTIVE_POINTS_SAMEType"/>
+  <complexType name="GE_R_CONSECUTIVE_POINTS_SAMEType">
+    <complexContent>
+      <extension base="qual:AbstractRingErrorType">
+        <sequence>
+          <element name="vertex1" type="gml:DirectPositionType"/>
+          <element name="vertex2" type="gml:DirectPositionType"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="GE_R_CONSECUTIVE_POINTS_SAMEPropertyType">
+    <sequence>
+      <element ref="qual:GE_R_CONSECUTIVE_POINTS_SAME"/>
+    </sequence>
+  </complexType>
+  <element name="GE_R_NOT_CLOSED" substitutionGroup="qual:AbstractRingError" type="qual:GE_R_NOT_CLOSEDType"/>
+  <complexType name="GE_R_NOT_CLOSEDType">
+    <complexContent>
+      <extension base="qual:AbstractRingErrorType">
+        <sequence/>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="GE_R_NOT_CLOSEDPropertyType">
+    <sequence>
+      <element ref="qual:GE_R_NOT_CLOSED"/>
+    </sequence>
+  </complexType>
+  <element name="GE_R_SELF_INTERSECTION" substitutionGroup="qual:AbstractRingError" type="qual:GE_R_SELF_INTERSECTIONType"/>
+  <complexType name="GE_R_SELF_INTERSECTIONType">
+    <complexContent>
+      <extension base="qual:AbstractRingErrorType">
+        <sequence>
+          <element minOccurs="0" name="edge1" type="qual:EdgePropertyType"/>
+          <element minOccurs="0" name="edge2" type="qual:EdgePropertyType"/>
+          <element minOccurs="0" name="vertex1" type="gml:DirectPositionType"/>
+          <element minOccurs="0" name="vertex2" type="gml:DirectPositionType"/>
+          <element name="type" type="qual:RingSelfIntersectionTypeType"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="GE_R_SELF_INTERSECTIONPropertyType">
+    <sequence>
+      <element ref="qual:GE_R_SELF_INTERSECTION"/>
+    </sequence>
+  </complexType>
+  <element name="GE_R_TOO_FEW_POINTS" substitutionGroup="qual:AbstractRingError" type="qual:GE_R_TOO_FEW_POINTSType"/>
+  <complexType name="GE_R_TOO_FEW_POINTSType">
+    <complexContent>
+      <extension base="qual:AbstractRingErrorType">
+        <sequence/>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="GE_R_TOO_FEW_POINTSPropertyType">
+    <sequence>
+      <element ref="qual:GE_R_TOO_FEW_POINTS"/>
+    </sequence>
+  </complexType>
+  <element name="GE_S_ALL_POLYGONS_WRONG_ORIENTATION" substitutionGroup="qual:AbstractSolidError" type="qual:GE_S_ALL_POLYGONS_WRONG_ORIENTATIONType"/>
+  <complexType name="GE_S_ALL_POLYGONS_WRONG_ORIENTATIONType">
+    <complexContent>
+      <extension base="qual:AbstractSolidErrorType">
+        <sequence/>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="GE_S_ALL_POLYGONS_WRONG_ORIENTATIONPropertyType">
+    <sequence>
+      <element ref="qual:GE_S_ALL_POLYGONS_WRONG_ORIENTATION"/>
+    </sequence>
+  </complexType>
+  <element name="GE_S_MULTIPLE_CONNECTED_COMPONENTS" substitutionGroup="qual:AbstractSolidError" type="qual:GE_S_MULTIPLE_CONNECTED_COMPONENTSType"/>
+  <complexType name="GE_S_MULTIPLE_CONNECTED_COMPONENTSType">
+    <complexContent>
+      <extension base="qual:AbstractSolidErrorType">
+        <sequence>
+          <element maxOccurs="unbounded" name="component" type="qual:PolygonIdListPropertyType"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="GE_S_MULTIPLE_CONNECTED_COMPONENTSPropertyType">
+    <sequence>
+      <element ref="qual:GE_S_MULTIPLE_CONNECTED_COMPONENTS"/>
+    </sequence>
+  </complexType>
+  <element name="GE_S_NON_MANIFOLD_EDGE" substitutionGroup="qual:AbstractSolidError" type="qual:GE_S_NON_MANIFOLD_EDGEType"/>
+  <complexType name="GE_S_NON_MANIFOLD_EDGEType">
+    <complexContent>
+      <extension base="qual:AbstractSolidErrorType">
+        <sequence>
+          <element name="edges" type="qual:EdgeListPropertyType"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="GE_S_NON_MANIFOLD_EDGEPropertyType">
+    <sequence>
+      <element ref="qual:GE_S_NON_MANIFOLD_EDGE"/>
+    </sequence>
+  </complexType>
+  <element name="GE_S_NON_MANIFOLD_VERTEX" substitutionGroup="qual:AbstractSolidError" type="qual:GE_S_NON_MANIFOLD_VERTEXType"/>
+  <complexType name="GE_S_NON_MANIFOLD_VERTEXType">
+    <complexContent>
+      <extension base="qual:AbstractSolidErrorType">
+        <sequence>
+          <element name="vertex" type="gml:DirectPositionType"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="GE_S_NON_MANIFOLD_VERTEXPropertyType">
+    <sequence>
+      <element ref="qual:GE_S_NON_MANIFOLD_VERTEX"/>
+    </sequence>
+  </complexType>
+  <element name="GE_S_NOT_CLOSED" substitutionGroup="qual:AbstractSolidError" type="qual:GE_S_NOT_CLOSEDType"/>
+  <complexType name="GE_S_NOT_CLOSEDType">
+    <complexContent>
+      <extension base="qual:AbstractSolidErrorType">
+        <sequence>
+          <element name="edges" type="qual:EdgeListPropertyType"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="GE_S_NOT_CLOSEDPropertyType">
+    <sequence>
+      <element ref="qual:GE_S_NOT_CLOSED"/>
+    </sequence>
+  </complexType>
+  <element name="GE_S_POLYGON_WRONG_ORIENTATION" substitutionGroup="qual:AbstractSolidError" type="qual:GE_S_POLYGON_WRONG_ORIENTATIONType"/>
+  <complexType name="GE_S_POLYGON_WRONG_ORIENTATIONType">
+    <complexContent>
+      <extension base="qual:AbstractSolidErrorType">
+        <sequence>
+          <element name="edges" type="qual:EdgeListPropertyType"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="GE_S_POLYGON_WRONG_ORIENTATIONPropertyType">
+    <sequence>
+      <element ref="qual:GE_S_POLYGON_WRONG_ORIENTATION"/>
+    </sequence>
+  </complexType>
+  <element name="GE_S_SELF_INTERSECTION" substitutionGroup="qual:AbstractSolidError" type="qual:GE_S_SELF_INTERSECTIONType"/>
+  <complexType name="GE_S_SELF_INTERSECTIONType">
+    <complexContent>
+      <extension base="qual:AbstractSolidErrorType">
+        <sequence>
+          <element name="polygonId1" type="string"/>
+          <element name="polygonId2" type="string"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="GE_S_SELF_INTERSECTIONPropertyType">
+    <sequence>
+      <element ref="qual:GE_S_SELF_INTERSECTION"/>
+    </sequence>
+  </complexType>
+  <element name="GE_S_TOO_FEW_POLYGONS" substitutionGroup="qual:AbstractSolidError" type="qual:GE_S_TOO_FEW_POLYGONSType"/>
+  <complexType name="GE_S_TOO_FEW_POLYGONSType">
+    <complexContent>
+      <extension base="qual:AbstractSolidErrorType">
+        <sequence/>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="GE_S_TOO_FEW_POLYGONSPropertyType">
+    <sequence>
+      <element ref="qual:GE_S_TOO_FEW_POLYGONS"/>
+    </sequence>
+  </complexType>
+  <element name="GlobalParameters" substitutionGroup="gml:_Object" type="qual:GlobalParametersType"/>
+  <complexType name="GlobalParametersType">
+    <sequence>
+      <element maxOccurs="unbounded" minOccurs="0" name="parameter" type="qual:ParameterPropertyType"/>
+    </sequence>
+  </complexType>
+  <complexType name="GlobalParametersPropertyType">
+    <sequence>
+      <element ref="qual:GlobalParameters"/>
+    </sequence>
+  </complexType>
+  <element name="Parameter" substitutionGroup="gml:_Object" type="qual:ParameterType"/>
+  <complexType name="ParameterType">
+    <sequence>
+      <element name="name" type="string"/>
+      <element minOccurs="0" name="uom" type="string"/>
+      <element name="value" type="string"/>
+    </sequence>
+  </complexType>
+  <complexType name="ParameterPropertyType">
+    <sequence>
+      <element ref="qual:Parameter"/>
+    </sequence>
+  </complexType>
+  <element name="PolygonIdList" substitutionGroup="gml:_Object" type="qual:PolygonIdListType"/>
+  <complexType name="PolygonIdListType">
+    <sequence>
+      <element maxOccurs="unbounded" name="polygonId" type="string"/>
+    </sequence>
+  </complexType>
+  <complexType name="PolygonIdListPropertyType">
+    <sequence>
+      <element ref="qual:PolygonIdList"/>
+    </sequence>
+  </complexType>
+  <element name="Requirement" substitutionGroup="gml:_Object" type="qual:RequirementType"/>
+  <complexType name="RequirementType">
+    <sequence>
+      <element name="enabled" type="boolean"/>
+      <element name="requirementType" type="qual:RequirementTypeType"/>
+      <element maxOccurs="unbounded" minOccurs="0" name="parameter" type="qual:ParameterPropertyType"/>
+    </sequence>
+  </complexType>
+  <complexType name="RequirementPropertyType">
+    <sequence>
+      <element ref="qual:Requirement"/>
+    </sequence>
+  </complexType>
+  <simpleType name="RequirementTypeType">
+    <restriction base="string">
+      <enumeration value="R_GE_R_TOO_FEW_POINTS"/>
+      <enumeration value="R_GE_R_NOT_CLOSED"/>
+      <enumeration value="R_GE_R_CONSECUTIVE_POINTS_SAME"/>
+      <enumeration value="R_GE_R_SELF_INTERSECTION"/>
+      <enumeration value="R_GE_P_NON_PLANAR"/>
+      <enumeration value="R_GE_P_INTERIOR_DISCONNECTED"/>
+      <enumeration value="R_GE_P_INTERSECTING_RINGS"/>
+      <enumeration value="R_GE_P_HOLE_OUTSIDE"/>
+      <enumeration value="R_GE_P_ORIENTATION_RINGS_SAME"/>
+      <enumeration value="R_GE_P_INNER_RINGS_NESTED"/>
+      <enumeration value="R_GE_S_TOO_FEW_POLYGONS"/>
+      <enumeration value="R_GE_S_NOT_CLOSED"/>
+      <enumeration value="R_GE_S_NON_MANIFOLD_EDGE"/>
+      <enumeration value="R_GE_S_POLYGON_WRONG_ORIENTATION"/>
+      <enumeration value="R_GE_S_ALL_POLYGONS_WRONG_ORIENTATION"/>
+      <enumeration value="R_GE_S_NON_MANIFOLD_VERTEX"/>
+      <enumeration value="R_GE_S_SELF_INTERSECTION"/>
+      <enumeration value="R_GE_S_MULTIPLE_CONNECTED_COMPONENTS"/>
+      <enumeration value="R_SE_ATTRIBUTES_EXISTING"/>
+      <enumeration value="R_SE_ATTRIBUTES_CORRECT"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="ResultTypeType">
+    <restriction base="string">
+      <enumeration value="OK"/>
+      <enumeration value="ERROR"/>
+      <enumeration value="NOT_CHECKED"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="RingSelfIntersectionTypeType">
+    <restriction base="string">
+      <enumeration value="EDGE_INTERSECTION"/>
+      <enumeration value="VERTEX_TOUCHES_EDGE"/>
+      <enumeration value="DUPLICATE_POINT"/>
+      <enumeration value="DEGENERATED_RING"/>
+    </restriction>
+  </simpleType>
+  <element name="SE_ATTRIBUTE_MISSING" substitutionGroup="qual:AbstractSemanticError" type="qual:SE_ATTRIBUTE_MISSINGType"/>
+  <complexType name="SE_ATTRIBUTE_MISSINGType">
+    <complexContent>
+      <extension base="qual:AbstractSemanticErrorType">
+        <sequence>
+          <element name="childId" type="string"/>
+          <element name="attributeName" type="string"/>
+          <element name="generic" type="boolean"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="SE_ATTRIBUTE_MISSINGPropertyType">
+    <sequence>
+      <element ref="qual:SE_ATTRIBUTE_MISSING"/>
+    </sequence>
+  </complexType>
+  <element name="SE_ATTRIBUTE_WRONG_VALUE" substitutionGroup="qual:AbstractSemanticError" type="qual:SE_ATTRIBUTE_WRONG_VALUEType"/>
+  <complexType name="SE_ATTRIBUTE_WRONG_VALUEType">
+    <complexContent>
+      <extension base="qual:AbstractSemanticErrorType">
+        <sequence>
+          <element name="childId" type="string"/>
+          <element name="attributeName" type="string"/>
+          <element name="generic" type="boolean"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="SE_ATTRIBUTE_WRONG_VALUEPropertyType">
+    <sequence>
+      <element ref="qual:SE_ATTRIBUTE_WRONG_VALUE"/>
+    </sequence>
+  </complexType>
+  <element name="Statistics" substitutionGroup="gml:_Object" type="qual:StatisticsType"/>
+  <complexType name="StatisticsType">
+    <sequence>
+      <element minOccurs="0" name="numErrorBuildings" type="qual:FeatureStatisticsPropertyType"/>
+      <element minOccurs="0" name="numErrorVegetation" type="qual:FeatureStatisticsPropertyType"/>
+      <element minOccurs="0" name="numErrorLandObjects" type="qual:FeatureStatisticsPropertyType"/>
+      <element minOccurs="0" name="numErrorBridgeObjects" type="qual:FeatureStatisticsPropertyType"/>
+      <element minOccurs="0" name="numErrorWaterObjects" type="qual:FeatureStatisticsPropertyType"/>
+      <element minOccurs="0" name="numErrorTransportation" type="qual:FeatureStatisticsPropertyType"/>
+      <element maxOccurs="unbounded" minOccurs="0" name="error" type="qual:ErrorPropertyType"/>
+    </sequence>
+  </complexType>
+  <complexType name="StatisticsPropertyType">
+    <sequence>
+      <element ref="qual:Statistics"/>
+    </sequence>
+  </complexType>
+  <element name="Validation" substitutionGroup="gml:_Feature" type="qual:ValidationType"/>
+  <complexType name="ValidationType">
+    <complexContent>
+      <extension base="gml:AbstractFeatureType">
+        <sequence>
+          <element name="validationDate" type="dateTime"/>
+          <element name="validationSoftware" type="string"/>
+          <element minOccurs="0" name="statistics" type="qual:StatisticsPropertyType"/>
+          <element name="validationPlan" type="qual:ValidationPlanPropertyType"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="ValidationPropertyType">
+    <sequence minOccurs="0">
+      <element ref="qual:Validation"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="ValidationPlan" substitutionGroup="gml:_Object" type="qual:ValidationPlanType"/>
+  <complexType name="ValidationPlanType">
+    <sequence>
+      <element name="globalParameters" type="qual:GlobalParametersPropertyType"/>
+      <element name="filter" type="qual:FilterPropertyType"/>
+      <element maxOccurs="unbounded" name="requirement" type="qual:RequirementPropertyType"/>
+    </sequence>
+  </complexType>
+  <complexType name="ValidationPlanPropertyType">
+    <sequence>
+      <element ref="qual:ValidationPlan"/>
+    </sequence>
+  </complexType>
+  <element name="ValidationResult" substitutionGroup="gml:_Object" type="qual:ValidationResultType"/>
+  <complexType name="ValidationResultType">
+    <sequence>
+      <element name="validationPlanID" type="gml:ReferenceType">
+        <annotation>
+          <appinfo>
+            <gml:targetElement>qual:Validation</gml:targetElement>
+          </appinfo>
+        </annotation>
+      </element>
+      <element maxOccurs="unbounded" minOccurs="0" name="error" type="qual:AbstractErrorPropertyType"/>
+      <element name="resultType" type="qual:ResultTypeType"/>
+    </sequence>
+  </complexType>
+  <complexType name="ValidationResultPropertyType">
+    <sequence>
+      <element ref="qual:ValidationResult"/>
+    </sequence>
+  </complexType>
+  <element name="validationResult" substitutionGroup="core:_GenericApplicationPropertyOfCityObject" type="qual:ValidationResultPropertyType"/>
+</schema>

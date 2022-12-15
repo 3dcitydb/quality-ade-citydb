@@ -1,0 +1,57 @@
+plugins {
+    id 'java-library'
+    id 'distribution'
+}
+
+group 'org.citydb.ade'
+version '1.0.0'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(11)
+    }
+    compileJava {
+        options.release = 8
+    }
+}
+
+configurations {
+    citygml4j
+}
+
+repositories {
+    maven {
+        url 'https://citydb.jfrog.io/artifactory/maven'
+    }
+    maven {
+        url 'https://repo.osgeo.org/repository/release'
+    }
+    mavenCentral()
+}
+
+dependencies {
+    api 'org.citydb:impexp-client-gui:5.3.0'
+    api 'org.citygml4j.ade:quality-ade-citygml4j:1.0.0'
+
+    citygml4j('org.citygml4j.ade:quality-ade-citygml4j:1.0.0') {
+        transitive = false
+    }
+}
+
+distributions.main {
+    distributionBaseName = 'quality-ade'
+
+    contents {
+        from 'README.md'
+        into('lib') {
+            from jar
+            from configurations.citygml4j
+        }
+        into('schema-mapping') {
+            from "$rootDir/resources/database/schema-mapping"
+        }
+        into('3dcitydb') {
+            from "$rootDir/resources/database/3dcitydb"
+        }
+    }
+}

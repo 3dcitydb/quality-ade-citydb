@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<schemaMapping xmlns="http://www.3dcitydb.org/database/schema/1.0">
+    <metadata>
+        <name>QualityADE</name>
+        <version>0.1.4</version>
+        <description>QualityADE</description>
+        <dbPrefix>qual</dbPrefix>
+    </metadata>
+    <applicationSchemas>
+        <schema id="qual" isADERoot="true">
+            <namespace context="citygml-2.0">https://transfer.hft-stuttgart.de/pages/citydoctor/qualityade/0.1.4</namespace>
+        </schema>
+    </applicationSchemas>
+    <complexTypes>
+        <complexType abstract="true" id="qual_AbstractErrorType" table="qual_error" objectClassId="80000" path="AbstractError" schema="qual"/>
+        <complexType abstract="true" id="qual_AbstractGeometryErrorType" table="qual_geometryerror" objectClassId="80001" path="AbstractGeometryError" schema="qual">
+            <extension base="qual_AbstractErrorType">
+                <join table="qual_error" fromColumn="id" toColumn="id" toRole="parent"/>
+            </extension>
+        </complexType>
+        <complexType abstract="true" id="qual_AbstractPolygonErrorType" table="qual_polygonerror" objectClassId="80002" path="AbstractPolygonError" schema="qual">
+            <extension base="qual_AbstractGeometryErrorType">
+                <join table="qual_geometryerror" fromColumn="id" toColumn="id" toRole="parent"/>
+            </extension>
+            <attribute column="polygonid" type="string" minOccurs="1" maxOccurs="1" path="polygonId" schema="qual"/>
+        </complexType>
+        <complexType abstract="true" id="qual_AbstractRingErrorType" table="qual_ringerror" objectClassId="80003" path="AbstractRingError" schema="qual">
+            <extension base="qual_AbstractGeometryErrorType">
+                <join table="qual_geometryerror" fromColumn="id" toColumn="id" toRole="parent"/>
+            </extension>
+            <attribute column="linearringid" type="string" minOccurs="1" maxOccurs="1" path="linearRingId" schema="qual"/>
+        </complexType>
+        <complexType abstract="true" id="qual_AbstractSemanticErrorType" table="qual_semanticerror" objectClassId="80004" path="AbstractSemanticError" schema="qual">
+            <extension base="qual_AbstractErrorType">
+                <join table="qual_error" fromColumn="id" toColumn="id" toRole="parent"/>
+            </extension>
+        </complexType>
+        <complexType abstract="true" id="qual_AbstractSolidErrorType" table="qual_soliderror" objectClassId="80005" path="AbstractSolidError" schema="qual">
+            <extension base="qual_AbstractGeometryErrorType">
+                <join table="qual_geometryerror" fromColumn="id" toColumn="id" toRole="parent"/>
+            </extension>
+            <attribute column="geometryid" type="string" minOccurs="1" maxOccurs="1" path="geometryId" schema="qual"/>
+        </complexType>
+        <complexType id="qual_CheckingType" table="qual_checking" objectClassId="80006" path="Checking" schema="qual">
+            <attribute column="featuretype" type="string" minOccurs="1" maxOccurs="1" path="featureType" schema="qual"/>
+        </complexType>
+        <complexType id="qual_EdgeType" table="qual_edge" objectClassId="80007" path="Edge" schema="qual">
+            <attribute column="from_" type="clob" minOccurs="1" maxOccurs="1" path="from" schema="qual"/>
+            <attribute column="to_" type="clob" minOccurs="1" maxOccurs="1" path="to" schema="qual"/>
+        </complexType>
+        <complexType id="qual_EdgeListType" table="qual_edgelist" objectClassId="80008" path="EdgeList" schema="qual">
+            <complexProperty refType="qual_EdgeType" minOccurs="1" path="edge" schema="qual">
+                <join table="qual_edge" fromColumn="id" toColumn="edgelist_edge_id" toRole="child"/>
+            </complexProperty>
+        </complexType>
+        <complexType id="qual_ErrorType" table="qual_error_1" objectClassId="80009" path="Error" schema="qual">
+            <attribute column="occurrences" type="integer" minOccurs="1" maxOccurs="1" path="occurrences" schema="qual"/>
+            <attribute column="name" type="string" minOccurs="1" maxOccurs="1" path="name" schema="qual"/>
+        </complexType>
+        <complexType id="qual_FeatureStatisticsType" table="qual_featurestatistics" objectClassId="80010" path="FeatureStatistics" schema="qual">
+            <attribute column="numchecked" type="integer" minOccurs="1" maxOccurs="1" path="numChecked" schema="qual"/>
+            <attribute column="numerrors" type="integer" minOccurs="1" maxOccurs="1" path="numErrors" schema="qual"/>
+        </complexType>
+        <complexType id="qual_FilterType" table="qual_filter" objectClassId="80011" path="Filter" schema="qual">
+            <complexProperty refType="qual_CheckingType" path="checking" schema="qual">
+                <join table="qual_checking" fromColumn="id" toColumn="filter_checking_id" toRole="child"/>
+            </complexProperty>
+        </complexType>
+        <complexType id="qual_GE_P_HOLE_OUTSIDEType" table="qual_polygonerror" objectClassId="80012" path="GE_P_HOLE_OUTSIDE" schema="qual">
+            <extension base="qual_AbstractPolygonErrorType"/>
+            <attribute column="linearringid" type="string" minOccurs="1" maxOccurs="1" path="linearRingId" schema="qual"/>
+        </complexType>
+        <complexType id="qual_GE_P_INNER_RINGS_NESTEDType" table="qual_polygonerror" objectClassId="80013" path="GE_P_INNER_RINGS_NESTED" schema="qual">
+            <extension base="qual_AbstractPolygonErrorType"/>
+            <attribute column="linearringid1" type="string" minOccurs="1" maxOccurs="1" path="linearRingId1" schema="qual"/>
+            <attribute column="linearringid2" type="string" minOccurs="1" maxOccurs="1" path="linearRingId2" schema="qual"/>
+        </complexType>
+        <complexType id="qual_GE_P_INTERIOR_DISCONNECTEDType" table="qual_polygonerror" objectClassId="80014" path="GE_P_INTERIOR_DISCONNECTED" schema="qual">
+            <extension base="qual_AbstractPolygonErrorType"/>
+        </complexType>
+        <complexType id="qual_GE_P_INTERSECTING_RINGSType" table="qual_polygonerror" objectClassId="80015" path="GE_P_INTERSECTING_RINGS" schema="qual">
+            <extension base="qual_AbstractPolygonErrorType"/>
+            <attribute column="linearringid1" type="string" minOccurs="1" maxOccurs="1" path="linearRingId1" schema="qual"/>
+            <attribute column="linearringid2" type="string" minOccurs="1" maxOccurs="1" path="linearRingId2" schema="qual"/>
+        </complexType>
+        <complexType id="qual_GE_P_NON_PLANAR_POLYGON_DISTANCE_PLANEType" table="qual_polygonerror" objectClassId="80016" path="GE_P_NON_PLANAR_POLYGON_DISTANCE_PLANE" schema="qual">
+            <extension base="qual_AbstractPolygonErrorType"/>
+            <complexAttribute minOccurs="1" maxOccurs="1" path="distance" schema="qual">
+                <attribute column="distance_uom" type="string" path="@uom" schema="gml"/>
+                <attribute column="distance" type="double" path="." schema="qual"/>
+            </complexAttribute>
+            <attribute column="vertex" type="clob" minOccurs="1" maxOccurs="1" path="vertex" schema="qual"/>
+        </complexType>
+        <complexType id="qual_GE_P_NON_PLANAR_POLYGON_NORMALS_DEVIATIONType" table="qual_polygonerror" objectClassId="80017" path="GE_P_NON_PLANAR_POLYGON_NORMALS_DEVIATION" schema="qual">
+            <extension base="qual_AbstractPolygonErrorType"/>
+            <complexAttribute minOccurs="1" maxOccurs="1" path="deviation" schema="qual">
+                <attribute column="deviation_uom" type="string" path="@uom" schema="gml"/>
+                <attribute column="deviation" type="double" path="." schema="qual"/>
+            </complexAttribute>
+        </complexType>
+        <complexType id="qual_GE_P_ORIENTATION_RINGS_SAMEType" table="qual_polygonerror" objectClassId="80018" path="GE_P_ORIENTATION_RINGS_SAME" schema="qual">
+            <extension base="qual_AbstractPolygonErrorType"/>
+            <attribute column="linearringid" type="string" minOccurs="1" maxOccurs="1" path="linearRingId" schema="qual"/>
+        </complexType>
+        <complexType id="qual_GE_R_CONSECUTIVE_POINTS_SAMEType" table="qual_ringerror" objectClassId="80019" path="GE_R_CONSECUTIVE_POINTS_SAME" schema="qual">
+            <extension base="qual_AbstractRingErrorType"/>
+            <attribute column="vertex1" type="clob" minOccurs="1" maxOccurs="1" path="vertex1" schema="qual"/>
+            <attribute column="vertex2" type="clob" minOccurs="1" maxOccurs="1" path="vertex2" schema="qual"/>
+        </complexType>
+        <complexType id="qual_GE_R_NOT_CLOSEDType" table="qual_ringerror" objectClassId="80020" path="GE_R_NOT_CLOSED" schema="qual">
+            <extension base="qual_AbstractRingErrorType"/>
+        </complexType>
+        <complexType id="qual_GE_R_SELF_INTERSECTIONType" table="qual_ringerror" objectClassId="80021" path="GE_R_SELF_INTERSECTION" schema="qual">
+            <extension base="qual_AbstractRingErrorType"/>
+            <complexProperty refType="qual_EdgeType" maxOccurs="1" path="edge1" schema="qual">
+                <join table="qual_edge" fromColumn="edge1_id" toColumn="id" toRole="parent"/>
+            </complexProperty>
+            <complexProperty refType="qual_EdgeType" maxOccurs="1" path="edge2" schema="qual">
+                <join table="qual_edge" fromColumn="edge2_id" toColumn="id" toRole="parent"/>
+            </complexProperty>
+            <attribute column="vertex1" type="clob" maxOccurs="1" path="vertex1" schema="qual"/>
+            <attribute column="vertex2" type="clob" maxOccurs="1" path="vertex2" schema="qual"/>
+            <attribute column="type" type="string" minOccurs="1" maxOccurs="1" path="type" schema="qual"/>
+        </complexType>
+        <complexType id="qual_GE_R_TOO_FEW_POINTSType" table="qual_ringerror" objectClassId="80022" path="GE_R_TOO_FEW_POINTS" schema="qual">
+            <extension base="qual_AbstractRingErrorType"/>
+        </complexType>
+        <complexType id="qual_GE_S_ALL_POLYGONS_WRONG_ORIENTATIONType" table="qual_soliderror" objectClassId="80023" path="GE_S_ALL_POLYGONS_WRONG_ORIENTATION" schema="qual">
+            <extension base="qual_AbstractSolidErrorType"/>
+        </complexType>
+        <complexType id="qual_GE_S_MULTIPLE_CONNECTED_COMPONENTSType" table="qual_soliderror" objectClassId="80024" path="GE_S_MULTIPLE_CONNECTED_COMPONENTS" schema="qual">
+            <extension base="qual_AbstractSolidErrorType"/>
+            <complexProperty refType="qual_PolygonIdListType" minOccurs="1" path="component" schema="qual">
+                <join table="qual_polygonidlist" fromColumn="id" toColumn="soliderror_component_id" toRole="child"/>
+            </complexProperty>
+        </complexType>
+        <complexType id="qual_PolygonIdListType" table="qual_polygonidlist" objectClassId="80025" path="PolygonIdList" schema="qual">
+            <attribute column="polygonid" type="string" minOccurs="1" path="polygonId" schema="qual"/>
+        </complexType>
+        <complexType id="qual_GE_S_NON_MANIFOLD_EDGEType" table="qual_soliderror" objectClassId="80026" path="GE_S_NON_MANIFOLD_EDGE" schema="qual">
+            <extension base="qual_AbstractSolidErrorType"/>
+            <complexProperty refType="qual_EdgeListType" minOccurs="1" maxOccurs="1" path="edges" schema="qual">
+                <join table="qual_edgelist" fromColumn="edges_id" toColumn="id" toRole="parent"/>
+            </complexProperty>
+        </complexType>
+        <complexType id="qual_GE_S_NON_MANIFOLD_VERTEXType" table="qual_soliderror" objectClassId="80027" path="GE_S_NON_MANIFOLD_VERTEX" schema="qual">
+            <extension base="qual_AbstractSolidErrorType"/>
+            <attribute column="vertex" type="clob" minOccurs="1" maxOccurs="1" path="vertex" schema="qual"/>
+        </complexType>
+        <complexType id="qual_GE_S_NOT_CLOSEDType" table="qual_soliderror" objectClassId="80028" path="GE_S_NOT_CLOSED" schema="qual">
+            <extension base="qual_AbstractSolidErrorType"/>
+            <complexProperty refType="qual_EdgeListType" minOccurs="1" maxOccurs="1" path="edges" schema="qual">
+                <join table="qual_edgelist" fromColumn="edges_id" toColumn="id" toRole="parent"/>
+            </complexProperty>
+        </complexType>
+        <complexType id="qual_GE_S_POLYGON_WRONG_ORIENTATIONType" table="qual_soliderror" objectClassId="80029" path="GE_S_POLYGON_WRONG_ORIENTATION" schema="qual">
+            <extension base="qual_AbstractSolidErrorType"/>
+            <complexProperty refType="qual_EdgeListType" minOccurs="1" maxOccurs="1" path="edges" schema="qual">
+                <join table="qual_edgelist" fromColumn="edges_id" toColumn="id" toRole="parent"/>
+            </complexProperty>
+        </complexType>
+        <complexType id="qual_GE_S_SELF_INTERSECTIONType" table="qual_soliderror" objectClassId="80030" path="GE_S_SELF_INTERSECTION" schema="qual">
+            <extension base="qual_AbstractSolidErrorType"/>
+            <attribute column="polygonid1" type="string" minOccurs="1" maxOccurs="1" path="polygonId1" schema="qual"/>
+            <attribute column="polygonid2" type="string" minOccurs="1" maxOccurs="1" path="polygonId2" schema="qual"/>
+        </complexType>
+        <complexType id="qual_GE_S_TOO_FEW_POLYGONSType" table="qual_soliderror" objectClassId="80031" path="GE_S_TOO_FEW_POLYGONS" schema="qual">
+            <extension base="qual_AbstractSolidErrorType"/>
+        </complexType>
+        <complexType id="qual_GlobalParametersType" table="qual_globalparameters" objectClassId="80032" path="GlobalParameters" schema="qual">
+            <complexProperty refType="qual_ParameterType" path="parameter" schema="qual">
+                <join table="qual_parameter" fromColumn="id" toColumn="globalparameter_parameter_id" toRole="child"/>
+            </complexProperty>
+        </complexType>
+        <complexType id="qual_ParameterType" table="qual_parameter" objectClassId="80033" path="Parameter" schema="qual">
+            <attribute column="name" type="string" minOccurs="1" maxOccurs="1" path="name" schema="qual"/>
+            <attribute column="uom" type="string" maxOccurs="1" path="uom" schema="qual"/>
+            <attribute column="value" type="string" minOccurs="1" maxOccurs="1" path="value" schema="qual"/>
+        </complexType>
+        <complexType id="qual_RequirementType" table="qual_requirement" objectClassId="80034" path="Requirement" schema="qual">
+            <attribute column="enabled" type="boolean" minOccurs="1" maxOccurs="1" path="enabled" schema="qual"/>
+            <attribute column="requirementtype" type="string" minOccurs="1" maxOccurs="1" path="requirementType" schema="qual"/>
+            <complexProperty refType="qual_ParameterType" path="parameter" schema="qual">
+                <join table="qual_parameter" fromColumn="id" toColumn="requirement_parameter_id" toRole="child"/>
+            </complexProperty>
+        </complexType>
+        <complexType id="qual_SE_ATTRIBUTE_MISSINGType" table="qual_semanticerror" objectClassId="80035" path="SE_ATTRIBUTE_MISSING" schema="qual">
+            <extension base="qual_AbstractSemanticErrorType"/>
+            <attribute column="childid" type="string" minOccurs="1" maxOccurs="1" path="childId" schema="qual"/>
+            <attribute column="attributename" type="string" minOccurs="1" maxOccurs="1" path="attributeName" schema="qual"/>
+            <attribute column="generic" type="boolean" minOccurs="1" maxOccurs="1" path="generic" schema="qual"/>
+        </complexType>
+        <complexType id="qual_SE_ATTRIBUTE_WRONG_VALUEType" table="qual_semanticerror" objectClassId="80036" path="SE_ATTRIBUTE_WRONG_VALUE" schema="qual">
+            <extension base="qual_AbstractSemanticErrorType"/>
+            <attribute column="childid" type="string" minOccurs="1" maxOccurs="1" path="childId" schema="qual"/>
+            <attribute column="attributename" type="string" minOccurs="1" maxOccurs="1" path="attributeName" schema="qual"/>
+            <attribute column="generic" type="boolean" minOccurs="1" maxOccurs="1" path="generic" schema="qual"/>
+        </complexType>
+        <complexType id="qual_StatisticsType" table="qual_statistics" objectClassId="80037" path="Statistics" schema="qual">
+            <complexProperty refType="qual_FeatureStatisticsType" maxOccurs="1" path="numErrorBuildings" schema="qual">
+                <join table="qual_featurestatistics" fromColumn="numerrorbuildings_id" toColumn="id" toRole="parent"/>
+            </complexProperty>
+            <complexProperty refType="qual_FeatureStatisticsType" maxOccurs="1" path="numErrorVegetation" schema="qual">
+                <join table="qual_featurestatistics" fromColumn="numerrorvegetation_id" toColumn="id" toRole="parent"/>
+            </complexProperty>
+            <complexProperty refType="qual_FeatureStatisticsType" maxOccurs="1" path="numErrorLandObjects" schema="qual">
+                <join table="qual_featurestatistics" fromColumn="numerrorlandobjects_id" toColumn="id" toRole="parent"/>
+            </complexProperty>
+            <complexProperty refType="qual_FeatureStatisticsType" maxOccurs="1" path="numErrorBridgeObjects" schema="qual">
+                <join table="qual_featurestatistics" fromColumn="numerrorbridgeobjects_id" toColumn="id" toRole="parent"/>
+            </complexProperty>
+            <complexProperty refType="qual_FeatureStatisticsType" maxOccurs="1" path="numErrorWaterObjects" schema="qual">
+                <join table="qual_featurestatistics" fromColumn="numerrorwaterobjects_id" toColumn="id" toRole="parent"/>
+            </complexProperty>
+            <complexProperty refType="qual_FeatureStatisticsType" maxOccurs="1" path="numErrorTransportation" schema="qual">
+                <join table="qual_featurestatistics" fromColumn="numerrortransportation_id" toColumn="id" toRole="parent"/>
+            </complexProperty>
+            <complexProperty refType="qual_ErrorType" path="error" schema="qual">
+                <join table="qual_error_1" fromColumn="id" toColumn="statistics_error_id" toRole="child"/>
+            </complexProperty>
+        </complexType>
+        <complexType id="qual_ValidationPlanType" table="qual_validationplan" objectClassId="80039" path="ValidationPlan" schema="qual">
+            <complexProperty refType="qual_GlobalParametersType" minOccurs="1" maxOccurs="1" path="globalParameters" schema="qual">
+                <join table="qual_globalparameters" fromColumn="globalparameters_id" toColumn="id" toRole="parent"/>
+            </complexProperty>
+            <complexProperty refType="qual_FilterType" minOccurs="1" maxOccurs="1" path="filter" schema="qual">
+                <join table="qual_filter" fromColumn="filter_id" toColumn="id" toRole="parent"/>
+            </complexProperty>
+            <complexProperty refType="qual_RequirementType" minOccurs="1" path="requirement" schema="qual">
+                <join table="qual_requirement" fromColumn="id" toColumn="validationpla_requirement_id" toRole="child"/>
+            </complexProperty>
+        </complexType>
+        <complexType id="qual_ValidationResultType" table="qual_validationresult" objectClassId="80040" path="ValidationResult" schema="qual">
+            <featureProperty target="qual_ValidationType" minOccurs="1" maxOccurs="1" path="validationPlanID" schema="qual">
+                <join table="qual_validation" fromColumn="validationplanid_id" toColumn="id" toRole="parent"/>
+            </featureProperty>
+            <complexProperty refType="qual_AbstractErrorType" path="error" schema="qual">
+                <join table="qual_error" fromColumn="id" toColumn="validationresult_error_id" toRole="child">
+                    <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
+                </join>
+            </complexProperty>
+            <attribute column="resulttype" type="string" minOccurs="1" maxOccurs="1" path="resultType" schema="qual"/>
+        </complexType>
+    </complexTypes>
+    <featureTypes>
+        <featureType id="qual_ValidationType" table="qual_validation" objectClassId="80038" path="Validation" schema="qual">
+            <extension base="AbstractFeatureType">
+                <join table="cityobject" fromColumn="id" toColumn="id" toRole="parent"/>
+            </extension>
+            <attribute column="validationdate" type="timestamp" minOccurs="1" maxOccurs="1" path="validationDate" schema="qual"/>
+            <attribute column="validationsoftware" type="string" minOccurs="1" maxOccurs="1" path="validationSoftware" schema="qual"/>
+            <complexProperty refType="qual_StatisticsType" maxOccurs="1" path="statistics" schema="qual">
+                <join table="qual_statistics" fromColumn="statistics_id" toColumn="id" toRole="parent"/>
+            </complexProperty>
+            <complexProperty refType="qual_ValidationPlanType" minOccurs="1" maxOccurs="1" path="validationPlan" schema="qual">
+                <join table="qual_validationplan" fromColumn="validationplan_id" toColumn="id" toRole="parent"/>
+            </complexProperty>
+        </featureType>
+    </featureTypes>
+    <propertyInjections>
+        <propertyInjection table="qual_cityobject" defaultBase="AbstractCityObjectType">
+            <join table="qual_cityobject" fromColumn="ID" toColumn="ID" toRole="child"/>
+            <complexProperty refType="qual_ValidationResultType" path="validationResult" schema="qual">
+                <join table="qual_validationresult" fromColumn="id" toColumn="cityobject_validationresu_id" toRole="child"/>
+            </complexProperty>
+        </propertyInjection>
+    </propertyInjections>
+</schemaMapping>
