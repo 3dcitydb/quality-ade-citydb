@@ -4,4 +4,5 @@ This is a 3DCityDB extension for the **Quality Application Domain Extension** (Q
 The extension supports version 0.1.4 of the Quality ADE.
 
 :information_source: The Quality ADE extension is in **maintenance mode** with no significant active development planned.
-Existing bugs will be fixed, but large new features will likely not be added.
+Existing bugs will be fixed, but large new features will likely not be added. Support through contributions or funding
+is welcome.
