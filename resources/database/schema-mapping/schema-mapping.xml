@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <schemaMapping xmlns="http://www.3dcitydb.org/database/schema/1.0">
     <metadata>
-        <name>QualityADE</name>
+        <name>Quality ADE</name>
         <version>0.1.4</version>
-        <description>QualityADE</description>
+        <description>Quality ADE</description>
         <dbPrefix>qual</dbPrefix>
     </metadata>
     <applicationSchemas>
