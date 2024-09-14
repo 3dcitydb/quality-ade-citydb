@@ -2,7 +2,7 @@
  * 3D City Database - The Open Source CityGML Database
  * https://www.3dcitydb.org/
  *
- * Copyright 2013 - 2022
+ * Copyright 2013 - 2024
  * Chair of Geoinformatics
  * Technical University of Munich, Germany
  * https://www.lrg.tum.de/gis/
@@ -88,7 +88,7 @@ public class ValidationResultExporter implements ADEExporter {
                         ringEdge1.getColumn("from_", "edge1_from"), ringEdge1.getColumn("to_", "edge1_to"),
                         ringEdge2.getColumn("from_", "edge2_from"), ringEdge2.getColumn("to_", "edge2_to"),
                         polygonError.getColumn("polygonid"), polygonError.getColumn("linearringid", "p_linearringid"),
-                        polygonError.getColumn("deviation"),polygonError.getColumn("deviation_uom"),
+                        polygonError.getColumn("deviation"), polygonError.getColumn("deviation_uom"),
                         polygonError.getColumn("distance"), polygonError.getColumn("distance_uom"),
                         polygonError.getColumn("linearringid1"), polygonError.getColumn("linearringid2"),
                         polygonError.getColumn("vertex", "p_vertex"),
